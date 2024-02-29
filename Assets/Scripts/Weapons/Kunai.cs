@@ -41,6 +41,9 @@ public class Kunai : MonoBehaviour
             hit = true;
             animator.SetTrigger("hit");
             boxCollider.enabled = false;
+        }else if (collision.gameObject.tag == "Wall")
+        {
+            Deactivate();
         }
 
     }
