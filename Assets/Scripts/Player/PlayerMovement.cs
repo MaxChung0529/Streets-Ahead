@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private LayerMask collisionMask;
-    private float playerScale = 0.5f;
+    private float playerScale = 0.4f;
     private bool grounded;
 
     [Header("Jumping")]
@@ -32,7 +32,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isSliding = false;
 
     [Header("Status")]
-    private PlayerStat stat;
+    //private PlayerStat stat;
+    public bool active;
 
     // Start is called before the first frame update
     void Start()
@@ -40,14 +41,15 @@ public class PlayerMovement : MonoBehaviour
         //Grab references
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        stat = GetComponent<PlayerStat>();
+        active = true;
     }
 
     // Update is called once per frame
     void Update()
     {
+
         //Block inputs if character is dashing or sliding
-        if (isDashing || isSliding || stat.dead)
+        if (isDashing || isSliding || !active)
         {
             return;
         }
@@ -153,6 +155,12 @@ public class PlayerMovement : MonoBehaviour
         return !isDashing;
     }
 
+    private void Die()
+    {
+        active = false;
+        gameObject.SetActive(false);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -171,6 +179,11 @@ public class PlayerMovement : MonoBehaviour
         {
             hitWall = true;
             StopCoroutine(Dash());
+        }
+
+        if (collision.gameObject.tag == "Enemies")
+        {
+            Die();
         }
     }
 

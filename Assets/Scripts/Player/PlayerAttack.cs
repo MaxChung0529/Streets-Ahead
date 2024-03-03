@@ -14,6 +14,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject[] kunais;
 
+    //[Header("Status")]
+    //private PlayerStat stat;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,12 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (!playerMovement.active)
+        {
+            return;
+        }
+
         //Attack if E was pressed
         if ((Input.GetKeyDown(KeyCode.E) && cdTimer > attackCD && playerMovement.canAttack())){
 

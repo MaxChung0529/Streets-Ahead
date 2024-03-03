@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedMovement : MonoBehaviour
+public class RedMovement : MonoBehaviour, IAttackable
 {
     [SerializeField] private float speed;
     private Rigidbody2D rb;
     private bool dead = false;
+    private bool collided = false;
 
     private PlayerStat stat;
 
@@ -19,20 +20,26 @@ public class RedMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (GameObject.Find("Player").GetComponent<PlayerStat>().dead)
+        //Stop if player is killed
+        if (!GameObject.Find("Player").GetComponent<PlayerMovement>().active)
         {
             return;
         }
 
-        if (!dead)
+        if (!dead && !collided)
         {
-            transform.Translate(-1 * speed, 0, 0);
+            Move();
         }
+    }
+
+    public void Move()
+    {
+        transform.Translate(-1 * speed, 0, 0);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.gameObject.tag == "Weapon")
         {
             dead = true;
@@ -45,5 +52,11 @@ public class RedMovement : MonoBehaviour
             //gameObject.SetActive(false);
         }
 
+        if (collision.gameObject.tag == "Wall")
+        {
+            collided = true;
+        }
+
     }
+
 }
