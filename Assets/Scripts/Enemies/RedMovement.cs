@@ -59,4 +59,6 @@ public class RedMovement : MonoBehaviour, IAttackable
 
     }
 
+    
+
 }
