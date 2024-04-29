@@ -18,6 +18,7 @@ public class PlayerManager: MonoBehaviour
     public Animator animator;
     public Rigidbody2D rb;
     public CapsuleCollider2D capsuleCollider;
+    private TrailRenderer trail;
 
     [Header("Stat")]
     public bool alive = true;
@@ -35,6 +36,8 @@ public class PlayerManager: MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        trail = GetComponent<TrailRenderer>();
+        trail.enabled = false;
     }
 
     void Update()
@@ -88,6 +91,7 @@ public class PlayerManager: MonoBehaviour
         {
             shielded = true;
             collision.gameObject.SetActive(false);
+            trail.enabled = true;
         }
 
         if (collision.gameObject.tag == "Enemies")
@@ -97,8 +101,9 @@ public class PlayerManager: MonoBehaviour
                 alive = false;
             }else
             {
-                movementScript.knockBack();
+                collision.gameObject.GetComponent<RedMovement>().knockBack();
                 shielded = false;
+                trail.enabled = false;
             }
         }
     }

@@ -48,6 +48,11 @@ public class RedMovement : MonoBehaviour, IAttackable
         animator.SetBool("Sucked", true);
     }
 
+    public void knockBack()
+    {
+        Debug.Log("KnockBack");
+    }
+
     private void OnBecameInvisible()
     {
         gameObject.SetActive(false);
