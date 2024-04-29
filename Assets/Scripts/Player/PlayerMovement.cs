@@ -199,6 +199,12 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
     }
 
+    public void knockBack()
+    {
+        Vector2 knockBackForce = new Vector2(100, 10);
+        rb.AddForce(knockBackForce, ForceMode2D.Impulse);
+    }
+
     public bool canAttack()
     {
         return !hitWall;

@@ -25,8 +25,9 @@ public class PlayerManager: MonoBehaviour
     [Header("Loot")]
     private int lotusCount = 0;
 
-    [Header("Weapon")]
+    [Header("Tools")]
     private int secondaryWeaponCount = 0;
+    private bool shielded = false;
 
 
     private void Start()
@@ -83,9 +84,22 @@ public class PlayerManager: MonoBehaviour
             collision.gameObject.SetActive(false);
         }
 
+        if (collision.gameObject.tag == "Shield")
+        {
+            shielded = true;
+            collision.gameObject.SetActive(false);
+        }
+
         if (collision.gameObject.tag == "Enemies")
         {
-            alive = false;
+            if (!shielded)
+            {
+                alive = false;
+            }else
+            {
+                movementScript.knockBack();
+                shielded = false;
+            }
         }
     }
 }

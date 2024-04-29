@@ -10,6 +10,7 @@ TagManager:
   - Enemies
   - Lotus
   - Blackhole
+  - Shield
   layers:
   - Default
   - TransparentFX
