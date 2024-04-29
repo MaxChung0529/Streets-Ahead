@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - Weapon
   - Enemies
+  - Lotus
   layers:
   - Default
   - TransparentFX
@@ -44,4 +45,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 605934637
+    locked: 0
+  - name: Blocks
+    uniqueID: 1397392259
+    locked: 0
+  - name: Characters
+    uniqueID: 3369249647
     locked: 0

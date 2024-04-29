@@ -9,8 +9,6 @@ public class RedMovement : MonoBehaviour, IAttackable
     private bool dead = false;
     private bool collided = false;
 
-    private PlayerStat stat;
-
     // Start is called before the first frame update
     void Start()
     {

@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 dashingDir;
     public bool dashReset = true;
 
+    [Header("Wall")]
+    [SerializeField] private Transform wallCheck;
     private bool isSliding = false;
 
     [Header("Status")]
@@ -126,7 +128,13 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(StopDashing());
 
-            rb.velocity = new Vector2(0, -3);
+            //transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
+
+            float originalGravity = rb.gravityScale;
+
+            rb.gravityScale = 0f;
+
+            rb.velocity = new Vector2(0, -0.5f);
             falling = false;
             animator.SetTrigger("slide");
             isSliding = true;
@@ -198,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool canAttack()
     {
-        return !hitWall && IsGrounded();
+        return !hitWall;
     }
 
     private bool IsGrounded()
@@ -218,12 +226,14 @@ public class PlayerMovement : MonoBehaviour
 
     private bool onWall()
     {
-        RaycastHit2D rayCastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        //RaycastHit2D rayCastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
 
-        Debug.Log(rayCastHit.collider != null);
+        //Debug.Log(rayCastHit.collider != null);
+
+        return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
 
 
-        return rayCastHit.collider != null;
+        //return rayCastHit.collider != null;
     }
 
     private bool CanDash()
@@ -236,6 +246,7 @@ public class PlayerMovement : MonoBehaviour
         active = false;
         gameObject.SetActive(false);
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -250,6 +261,11 @@ public class PlayerMovement : MonoBehaviour
             animator.ResetTrigger("slide");
             animator.ResetTrigger("fall");
         }
+
+        //if (collision.gameObject.tag = "Wall")
+        //{
+
+        //}
 
         if (collision.gameObject.tag == "Enemies")
         {
