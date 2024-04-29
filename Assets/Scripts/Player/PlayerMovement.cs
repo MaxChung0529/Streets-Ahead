@@ -39,10 +39,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform wallCheck;
     private bool isSliding = false;
 
-    [Header("Status")]
-    //private PlayerStat stat;
-    public bool active;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        active = true;
     }
 
     // Update is called once per frame
@@ -58,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
     {
 
         //Block inputs if character is dashing or sliding
-        if (isDashing || isSliding || !active)
+        if (isDashing || isSliding)
         {
             return;
         }
@@ -241,12 +236,6 @@ public class PlayerMovement : MonoBehaviour
         return !isDashing && dashReset;
     }
 
-    private void Die()
-    {
-        active = false;
-        gameObject.SetActive(false);
-    }
-
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -260,16 +249,6 @@ public class PlayerMovement : MonoBehaviour
 
             animator.ResetTrigger("slide");
             animator.ResetTrigger("fall");
-        }
-
-        //if (collision.gameObject.tag = "Wall")
-        //{
-
-        //}
-
-        if (collision.gameObject.tag == "Enemies")
-        {
-            Die();
         }
     }
 }

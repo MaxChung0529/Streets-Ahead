@@ -20,7 +20,6 @@ public class LotusPickUp : MonoBehaviour
         {
             LotusManager.instance.addLotus();
             gameObject.SetActive(false);
-
         }
     }
 }

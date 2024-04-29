@@ -9,6 +9,7 @@ TagManager:
   - Weapon
   - Enemies
   - Lotus
+  - Blackhole
   layers:
   - Default
   - TransparentFX
@@ -18,9 +19,9 @@ TagManager:
   - UI
   - Wall
   - Characters
-  - 
-  - 
-  - 
+  - Enemies
+  - Loot
+  - Weapons
   - 
   - 
   - 

@@ -23,19 +23,11 @@ public class Kunai : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        if (!spriteRenderer.isVisible)
-        {
-            Deactivate();
-        }
-
         if (hit) return;
         float movementSpeed = speed * Time.deltaTime * direction;
         transform.Translate(movementSpeed, 0, 0);

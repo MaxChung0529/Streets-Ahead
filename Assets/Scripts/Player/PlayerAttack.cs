@@ -13,6 +13,9 @@ public class PlayerAttack : MonoBehaviour
     [Header("Projectile")]
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject[] kunais;
+    [SerializeField] private GameObject blackhole;
+
+    private PlayerManager playerManager;
 
     //[Header("Status")]
     //private PlayerStat stat;
@@ -22,28 +25,32 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerManager = GetComponent<PlayerManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        if (!playerMovement.active)
-        {
-            return;
-        }
-
-        //Attack if E was pressed
+        //Shoot kunai if E was pressed
         if ((Input.GetKeyDown(KeyCode.E) && cdTimer > attackCD && playerMovement.canAttack())){
 
-            Attack();
+            ShootKunai();
 
         }
+
+        if ((Input.GetKeyDown(KeyCode.Q) && cdTimer > attackCD && playerMovement.canAttack() && playerManager.canSecondaryAttack()))
+        {
+
+            PushBlackHole();
+
+        }
+
 
         cdTimer += Time.deltaTime;
     }
 
-    void Attack()
+    void ShootKunai()
     {
         cdTimer = 0;
         animator.SetTrigger("attack");
@@ -60,7 +67,7 @@ public class PlayerAttack : MonoBehaviour
     //Pooling kunais
     private int findKunai()
     {
-        for (int i = 0; i< kunais.Length; i++)
+        for (int i = 0; i < kunais.Length; i++)
         {
             if (!kunais[i].activeInHierarchy)
             {
@@ -68,5 +75,15 @@ public class PlayerAttack : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    void PushBlackHole()
+    {
+        cdTimer = 0;
+        animator.SetTrigger("attack");
+
+        blackhole.SetActive(true);
+        blackhole.transform.position = firepoint.position;
+        blackhole.GetComponent<BlackHole>().SetDirection(Mathf.Sign(transform.localScale.x));
     }
 }
