@@ -8,6 +8,9 @@ public class RedMovement : MonoBehaviour
 
     [SerializeField] private float speed;
     [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask blackholeLayer;
+    [SerializeField] private LayerMask ignoredLayer;
+
     private Rigidbody2D rb;
     private bool dead = false;
     private bool collided = false;
@@ -43,6 +46,14 @@ public class RedMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (dead)
+        {
+            //gameObject.SetActive(false);
+            gameObject.layer = ignoredLayer;
+            return;
+        }
+
         //Celebrate if player is killed
         if (!GameObject.Find("Player").GetComponent<PlayerManager>().alive)
         {
@@ -74,7 +85,6 @@ public class RedMovement : MonoBehaviour
         if (SeePlayer())
         {
             speed = originalSpeed * 1.02f;
-            Debug.Log(speed);
         }
     }
 
@@ -124,9 +134,10 @@ public class RedMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Weapon")
         {
-            Sucked();
-            capsuleCollider.enabled = false;
+            Debug.Log(collision.gameObject.layer + "   " + LayerMask.NameToLayer("Blackhole"));
+            dead = true;
         }
+
 
         if (collision.gameObject.tag == "Wall")
         {
@@ -140,7 +151,11 @@ public class RedMovement : MonoBehaviour
         if (collision.gameObject.tag == "Weapon")
         {
             dead = true;
-            Sucked();
+
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Blackhole"))
+            {
+                Sucked();
+            }
 
             //Let Red freefall
             //rb.constraints = RigidbodyConstraints2D.None;

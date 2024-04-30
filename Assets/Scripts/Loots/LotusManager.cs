@@ -19,13 +19,13 @@ public class LotusManager : MonoBehaviour
     private void Start()
     {
         lotusHeld = GetComponent<TextMeshProUGUI>();
-        lotusHeld.text = lotusCount.ToString() + " Lotus Held";
+        lotusHeld.text = "X " + lotusCount.ToString();
     }
 
     public void addLotus()
     {
         lotusCount++;
-        lotusHeld.text = lotusCount.ToString() + " Lotus Held";
+        lotusHeld.text = "X " + lotusCount.ToString();
     }
 
 }

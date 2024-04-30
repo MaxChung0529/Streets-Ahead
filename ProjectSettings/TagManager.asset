@@ -11,6 +11,7 @@ TagManager:
   - Lotus
   - Blackhole
   - Shield
+  - FallDetector
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Enemies
   - Loot
   - Weapons
-  - 
+  - Blackhole
   - 
   - 
   - 

@@ -21,6 +21,9 @@ public class PlayerManager: MonoBehaviour
     private TrailRenderer trail;
     public Transform player;
 
+    private Vector3 respawnPt;
+    public GameObject fallDetector;
+
     [Header("Stat")]
     public bool alive = true;
 
@@ -40,6 +43,7 @@ public class PlayerManager: MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         trail.enabled = false;
         player = transform;
+        respawnPt = transform.position;
     }
 
     void Update()
@@ -51,6 +55,8 @@ public class PlayerManager: MonoBehaviour
         }
 
         IsGrounded();
+
+        fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
     private bool IsGrounded()
@@ -72,6 +78,14 @@ public class PlayerManager: MonoBehaviour
     {
         secondaryWeaponCount--;
         return secondaryWeaponCount + 1 > 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "FallDetector")
+        {
+            transform.position = respawnPt;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -98,6 +112,7 @@ public class PlayerManager: MonoBehaviour
 
         if (collision.gameObject.tag == "Enemies")
         {
+
             if (!shielded)
             {
                 alive = false;
