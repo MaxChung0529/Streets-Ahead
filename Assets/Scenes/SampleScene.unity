@@ -3068,6 +3068,7 @@ GameObject:
   - component: {fileID: 704561253}
   - component: {fileID: 704561256}
   - component: {fileID: 704561255}
+  - component: {fileID: 704561257}
   m_Layer: 8
   m_Name: Red
   m_TagString: Enemies
@@ -3174,8 +3175,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.007482233, y: 0.011172788}
-  m_Size: {x: 0.21414758, y: 5.067034}
+  m_Offset: {x: 0.047420263, y: 0.011172891}
+  m_Size: {x: 0.79452753, y: 5.067034}
   m_Direction: 0
 --- !u!50 &704561254
 Rigidbody2D:
@@ -3218,6 +3219,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0.03
   capsuleCollider: {fileID: 704561253}
+  boxCollider: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -3242,6 +3244,51 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!61 &704561257
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 704561250}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 4.423446, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5, y: 5}
+    newSize: {x: 5, y: 5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 7.88622, y: 5}
+  m_EdgeRadius: 0
 --- !u!1001 &724031492
 PrefabInstance:
   m_ObjectHideFlags: 0

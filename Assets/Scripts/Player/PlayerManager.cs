@@ -103,7 +103,7 @@ public class PlayerManager: MonoBehaviour
                 alive = false;
             }else
             {
-                collision.gameObject.GetComponent<RedMovement>().knockBack();
+                collision.gameObject.GetComponent<RedMovement>().KnockBack();
                 shielded = false;
                 trail.enabled = false;
             }

@@ -7,16 +7,18 @@ public class RedMovement : MonoBehaviour
 
 
     [SerializeField] private float speed;
+    [SerializeField] private LayerMask playerLayer;
     private Rigidbody2D rb;
     private bool dead = false;
     private bool collided = false;
     private Animator animator;
-    [SerializeField] private CapsuleCollider2D capsuleCollider;
-    [SerializeField] private LayerMask playerLayer;
+    private CapsuleCollider2D capsuleCollider;
+    private BoxCollider2D boxCollider;
     private int dir = -1;
     private Vector3 initScale;
     private Transform enemy;
     private Transform target;
+    private float originalSpeed;
 
     [Header("Knockback")]
     private float knockbackDuration = 1.5f;
@@ -29,6 +31,10 @@ public class RedMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        boxCollider = GetComponent<BoxCollider2D>();
+
+        originalSpeed = speed;
+
         initScale = rb.transform.localScale;
         enemy = rb.transform;
         target = FindAnyObjectByType<PlayerManager>().player;
@@ -65,10 +71,11 @@ public class RedMovement : MonoBehaviour
             MoveInDir(dir);
         }
 
-/*        if (seePlayer())
+        if (SeePlayer())
         {
-            dead = true;
-        }*/
+            speed = originalSpeed * 1.02f;
+            Debug.Log(speed);
+        }
     }
 
     public void MoveInDir(int direction)
@@ -87,7 +94,7 @@ public class RedMovement : MonoBehaviour
         animator.SetBool("Sucked", true);
     }
 
-    public void knockBack()
+    public void KnockBack()
     {
         knockbackCounter = knockbackDuration;
 
@@ -95,9 +102,9 @@ public class RedMovement : MonoBehaviour
         rb.AddForce(kbForce, ForceMode2D.Force);
     }
 
-    private bool seePlayer()
+    private bool SeePlayer()
     {
-        RaycastHit2D hit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.left, 0, playerLayer);
+        RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.left, 0, playerLayer);
 
         return hit.collider != null;
     }
@@ -105,7 +112,7 @@ public class RedMovement : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(capsuleCollider.bounds.center, capsuleCollider.bounds.size);
+        Gizmos.DrawWireCube(boxCollider.bounds.center, boxCollider.bounds.size);
     }
 
     private void OnBecameInvisible()
