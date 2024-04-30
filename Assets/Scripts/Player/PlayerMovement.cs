@@ -52,8 +52,8 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
 
-        //Block inputs if character is dashing or sliding
-        if (isDashing || isSliding)
+        //Block inputs if character is dashing
+        if (isDashing)
         {
             return;
         }
@@ -61,13 +61,16 @@ public class PlayerMovement : MonoBehaviour
         float inputX = Input.GetAxis("Horizontal");
         bool jumpInput = Input.GetButton("Jump");
 
-        //Horizontal movement
-        rb.velocity = new Vector2(inputX * speed, rb.velocity.y);
-
-        //Flip player to go left or right
-        if (inputX != 0)
+        if (!isSliding)
         {
-            transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
+            //Horizontal movement
+            rb.velocity = new Vector2(inputX * speed, rb.velocity.y);
+
+            //Flip player to go left or right
+            if (inputX != 0)
+            {
+                transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
+            }
         }
 
         //Ground check
@@ -89,10 +92,30 @@ public class PlayerMovement : MonoBehaviour
         //Wall check
         onWall();
 
+        //Wall slide
+        if (onWall() && !IsGrounded())
+        {
+            StartCoroutine(StopDashing());
+
+            //transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
+
+            float originalGravity = rb.gravityScale;
+
+            rb.gravityScale = 0f;
+
+            rb.velocity = new Vector2(0, -0.5f);
+            falling = false;
+            animator.SetTrigger("slide");
+            isSliding = true;
+        }
+
         //Jump
-        if (jumpInput && IsGrounded() && !onWall() && lastJump >= jumpingCD)
+        if (jumpInput && (IsGrounded() || isSliding) && lastJump >= jumpingCD)
         {
             lastJump = 0f;
+            animator.SetBool("isSliding", false);
+            animator.ResetTrigger("slide");
+            isSliding = false;
             Jump();
         }
 
@@ -116,23 +139,6 @@ public class PlayerMovement : MonoBehaviour
                 falling = true;
                 animator.SetTrigger("fall");
             }
-        }
-
-        //Wall slide
-        if (onWall() && !IsGrounded())
-        {
-            StartCoroutine(StopDashing());
-
-            //transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
-
-            float originalGravity = rb.gravityScale;
-
-            rb.gravityScale = 0f;
-
-            rb.velocity = new Vector2(0, -0.5f);
-            falling = false;
-            animator.SetTrigger("slide");
-            isSliding = true;
         }
 
         //Dash
@@ -199,12 +205,6 @@ public class PlayerMovement : MonoBehaviour
         isDashing = false;
     }
 
-    public void knockBack()
-    {
-        Vector2 knockBackForce = new Vector2(100, 10);
-        rb.AddForce(knockBackForce, ForceMode2D.Impulse);
-    }
-
     public bool canAttack()
     {
         return !hitWall;
@@ -239,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CanDash()
     {
-        return !isDashing && dashReset;
+        return !isDashing && dashReset && !isSliding;
     }
 
 
