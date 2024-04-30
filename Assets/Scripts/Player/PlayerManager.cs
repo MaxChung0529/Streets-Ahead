@@ -19,6 +19,7 @@ public class PlayerManager: MonoBehaviour
     public Rigidbody2D rb;
     public CapsuleCollider2D capsuleCollider;
     private TrailRenderer trail;
+    public Transform player;
 
     [Header("Stat")]
     public bool alive = true;
@@ -38,6 +39,7 @@ public class PlayerManager: MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         trail = GetComponent<TrailRenderer>();
         trail.enabled = false;
+        player = transform;
     }
 
     void Update()
