@@ -50,7 +50,7 @@ public class RedMovement : MonoBehaviour
         if (dead)
         {
             //gameObject.SetActive(false);
-            gameObject.layer = ignoredLayer;
+            capsuleCollider.enabled = false;
             return;
         }
 
@@ -72,7 +72,6 @@ public class RedMovement : MonoBehaviour
             if (knockbackCounter <= 0)
             {
                 speed = Mathf.Abs(speed * 0.5f);
-                Debug.Log(speed);
             }
         }
 
@@ -125,16 +124,10 @@ public class RedMovement : MonoBehaviour
         Gizmos.DrawWireCube(boxCollider.bounds.center, boxCollider.bounds.size);
     }
 
-    private void OnBecameInvisible()
-    {
-        gameObject.SetActive(false);
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Weapon")
         {
-            Debug.Log(collision.gameObject.layer + "   " + LayerMask.NameToLayer("Blackhole"));
             dead = true;
         }
 
