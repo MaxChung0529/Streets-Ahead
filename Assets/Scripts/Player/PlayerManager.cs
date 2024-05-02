@@ -8,6 +8,8 @@ public class PlayerManager: MonoBehaviour
     [SerializeField] private PlayerAttack attackScript;
     [SerializeField] private PlayerMovement movementScript;
 
+    private LevelManager levelManager;
+
     [Header("Player")]
     [SerializeField] public LayerMask groundLayer;
     [SerializeField] public LayerMask wallLayer;
@@ -44,6 +46,7 @@ public class PlayerManager: MonoBehaviour
         trail.enabled = false;
         player = transform;
         respawnPt = transform.position;
+        levelManager = LevelManager.instance;
     }
 
     void Update()
@@ -91,14 +94,13 @@ public class PlayerManager: MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Lotus")
-        {   
-            LotusManager.instance.addLotus();
+        {
+            levelManager.addLotus();
             collision.gameObject.SetActive(false);
         }
 
         if (collision.gameObject.tag == "Blackhole")
         {
-            Debug.Log("Picked up");
             secondaryWeaponCount = 3;
             collision.gameObject.SetActive(false);
         }
@@ -120,6 +122,11 @@ public class PlayerManager: MonoBehaviour
         {
             collision.gameObject.SetActive(false);
             movementScript.MoonWalk();
+        }
+
+        if (collision.gameObject.tag == "Checkpoint")
+        {
+            levelManager.Check();
         }
 
         if (collision.gameObject.tag == "Enemies")

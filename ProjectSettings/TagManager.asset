@@ -17,6 +17,7 @@ TagManager:
   - Trampoline
   - Lightning
   - Moonwalk
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
