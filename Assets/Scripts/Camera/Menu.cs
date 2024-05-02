@@ -8,10 +8,6 @@ public class Menu : MonoBehaviour
 
     public GameObject confirmationWindow;
 
-    private void Start()
-    {
-    }
-
     public void StartNewGame()
     {
         SceneManager.LoadScene(1);

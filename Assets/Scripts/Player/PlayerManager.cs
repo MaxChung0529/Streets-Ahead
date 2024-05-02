@@ -110,6 +110,18 @@ public class PlayerManager: MonoBehaviour
             trail.enabled = true;
         }
 
+        if (collision.gameObject.tag == "Lightning")
+        {
+            collision.gameObject.SetActive(false);
+            movementScript.Flash();
+        }
+
+        if (collision.gameObject.tag == "Moonwalk")
+        {
+            collision.gameObject.SetActive(false);
+            movementScript.MoonWalk();
+        }
+
         if (collision.gameObject.tag == "Enemies")
         {
 
