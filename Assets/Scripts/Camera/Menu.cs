@@ -5,8 +5,35 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+
+    public GameObject confirmationWindow;
+
+    private void Start()
+    {
+    }
+
     public void StartNewGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void LoadGame()
+    {
+
+    }
+
+    public void QuitRequest()
+    {
+        confirmationWindow.SetActive(true);
+    }
+
+    public void StayInGame()
+    {
+        confirmationWindow.SetActive(false);
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
