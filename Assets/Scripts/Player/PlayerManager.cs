@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerManager: MonoBehaviour
 {
+    public static PlayerManager instance;
 
     [SerializeField] private PlayerAttack attackScript;
     [SerializeField] private PlayerMovement movementScript;
@@ -13,6 +14,7 @@ public class PlayerManager: MonoBehaviour
     [Header("Player")]
     [SerializeField] public LayerMask groundLayer;
     [SerializeField] public LayerMask wallLayer;
+    [SerializeField] public Transform firepoint;
     public float playerScale = 0.4f;
     public bool grounded;
     public bool onGround;
@@ -20,11 +22,16 @@ public class PlayerManager: MonoBehaviour
     public Animator animator;
     public Rigidbody2D rb;
     public CapsuleCollider2D capsuleCollider;
-    private TrailRenderer trail;
+    public TrailRenderer trail;
     public Transform player;
+
+    private float originalSpeed = 0f;
+    public float speed = 15f;
 
     private Vector3 respawnPt;
     public GameObject fallDetector;
+
+    public Tools holdingTool;
 
     [Header("Stat")]
     public bool alive = true;
@@ -32,13 +39,27 @@ public class PlayerManager: MonoBehaviour
     [Header("Loot")]
     private int lotusCount = 0;
 
-    [Header("Tools")]
-    private int secondaryWeaponCount = 0;
-    private bool shielded = false;
+    [Header("Blackhole")]
+    [SerializeField] public GameObject[] blackholes;
+    public int blackholeCount = 0;
+
+    public bool shielded = false;
+
+    [Header("Flash")]
+    public bool spedUp = false;
+    public float speedDuration = 0f;
+
+    [Header("Moonwalk")]
+    public bool moonWalk = false;
+    public float moonWalkDuration = 0f;
+    public float gravity = 2f;
+    private float originalGravity = 0f;
 
 
     private void Start()
     {
+        instance = this;
+
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
@@ -47,6 +68,11 @@ public class PlayerManager: MonoBehaviour
         player = transform;
         respawnPt = transform.position;
         levelManager = LevelManager.instance;
+
+        originalSpeed = speed;
+        originalGravity = gravity;
+
+
     }
 
     void Update()
@@ -57,7 +83,58 @@ public class PlayerManager: MonoBehaviour
             return;
         }
 
+        if (Input.GetKeyDown(KeyCode.Q)) {
+
+            Debug.Log(holdingTool);
+            Debug.Log(blackholeCount);
+
+            if (holdingTool != null)
+            {
+                holdingTool.Activate();
+                holdingTool = null;
+            }else if (blackholeCount > 0)
+            {
+                attackScript.PushBlackHole();
+            }
+        }
+
         IsGrounded();
+        
+        //SpeedUp activated
+        if (spedUp)
+        {
+            speedDuration -= Time.deltaTime;
+
+            if (speedDuration > 0)
+            {
+                speed = originalSpeed * 1.5f;
+            }
+
+            if (speedDuration <= 0)
+            {
+                speed = originalSpeed;
+                spedUp = false;
+                holdingTool = null;
+            }
+        }
+
+        //Moonwalk activated
+        if (moonWalk)
+        {
+            moonWalkDuration -= Time.deltaTime;
+
+            if (moonWalkDuration > 0)
+            {
+                gravity = originalGravity * 0.5f;
+            }
+
+            if (moonWalkDuration <= 0)
+            {
+                gravity = originalGravity;
+                moonWalk = false;
+                holdingTool = null;
+            }
+        }
 
         fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
@@ -77,10 +154,10 @@ public class PlayerManager: MonoBehaviour
         return onGround;
     }
 
-    public bool canSecondaryAttack()
-    {
-        secondaryWeaponCount--;
-        return secondaryWeaponCount + 1 > 0;
+    public bool canPushBlackHole()
+    {   
+        blackholeCount--;
+        return blackholeCount + 1 > 0 && holdingTool == null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -101,27 +178,27 @@ public class PlayerManager: MonoBehaviour
 
         if (collision.gameObject.tag == "Blackhole")
         {
-            secondaryWeaponCount = 3;
+            blackholeCount = 3;
             collision.gameObject.SetActive(false);
         }
 
         if (collision.gameObject.tag == "Shield")
         {
-            shielded = true;
+            holdingTool = new Shield();
             collision.gameObject.SetActive(false);
-            trail.enabled = true;
         }
 
         if (collision.gameObject.tag == "Lightning")
         {
+            holdingTool = new Lightning();
             collision.gameObject.SetActive(false);
-            movementScript.Flash();
         }
 
         if (collision.gameObject.tag == "Moonwalk")
         {
+            holdingTool = new Moonwalk();
             collision.gameObject.SetActive(false);
-            movementScript.MoonWalk();
+
         }
 
         if (collision.gameObject.tag == "Checkpoint")
@@ -139,6 +216,9 @@ public class PlayerManager: MonoBehaviour
             {
                 collision.gameObject.GetComponent<RedMovement>().KnockBack();
                 shielded = false;
+
+                var checkTool = holdingTool as Shield;
+
                 trail.enabled = false;
             }
         }

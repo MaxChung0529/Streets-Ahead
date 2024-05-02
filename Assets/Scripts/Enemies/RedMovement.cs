@@ -50,7 +50,8 @@ public class RedMovement : MonoBehaviour
         if (dead)
         {
             //gameObject.SetActive(false);
-            capsuleCollider.enabled = false;
+            //capsuleCollider.enabled = false;
+            rb.constraints = RigidbodyConstraints2D.None;
             return;
         }
 

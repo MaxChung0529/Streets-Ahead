@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,18 +9,10 @@ public class PlayerMovement : MonoBehaviour
     private CapsuleCollider2D capsuleCollider;
 
     private bool falling = false;
-    private float gravity = 2f;
     private bool hitWall;
-
-    [Header("Flash")]
-    private bool spedUp = false;
-    private float speedDuration = 0f;
-    private float originalSpeed = 0f;
+    private float gravity;
 
     [Header("Moonwalk")]
-    private bool moonWalk = false;
-    private float moonWalkDuration = 0f;
-    private float originalGravity = 0f;
 
     [Header("Player")]
     [SerializeField] public LayerMask groundLayer;
@@ -58,51 +49,18 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        originalSpeed = speed;
-        originalGravity = gravity;
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        gravity = PlayerManager.instance.gravity;
         //Block inputs if character is dashing
         if (isDashing)
         {
             return;
-        }
-
-        if (moonWalk)
-        {
-            moonWalkDuration -= Time.deltaTime;
-
-            if (moonWalkDuration > 0)
-            {
-                gravity = originalGravity * 0.5f;
-            }
-
-            if (moonWalkDuration <= 0)
-            {
-                gravity = originalGravity;
-                moonWalk = false;
-            }
-        }
-
-        if (spedUp)
-        {
-            speedDuration -= Time.deltaTime;
-
-            if (speedDuration > 0)
-            {
-                speed = originalSpeed * 1.5f;
-            }
-
-            if (speedDuration <= 0)
-            {
-                speed = originalSpeed;
-                spedUp = false;
-            }
-
         }
 
         float inputX = Input.GetAxis("Horizontal");
@@ -144,7 +102,6 @@ public class PlayerMovement : MonoBehaviour
         {
             StartCoroutine(StopDashing());
 
-            //transform.localScale = new Vector3(Mathf.Sign(inputX) * playerScale, playerScale, playerScale);
 
             float originalGravity = rb.gravityScale;
 
@@ -250,18 +207,6 @@ public class PlayerMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(dashingTime);
         isDashing = false;
-    }
-
-    public void Flash()
-    {
-        speedDuration = 3f;
-        spedUp = true;
-    }
-
-    public void MoonWalk()
-    {
-        moonWalkDuration = 5f;
-        moonWalk = true;
     }
 
     public bool canAttack()

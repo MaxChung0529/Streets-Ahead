@@ -13,19 +13,15 @@ public class PlayerAttack : MonoBehaviour
     [Header("Projectile")]
     [SerializeField] private Transform firepoint;
     [SerializeField] private GameObject[] kunais;
-    [SerializeField] private GameObject blackhole;
+    [SerializeField] private GameObject[] blackholes;
 
     private PlayerManager playerManager;
-
-    //[Header("Status")]
-    //private PlayerStat stat;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
-        playerManager = GetComponent<PlayerManager>();
     }
 
     // Update is called once per frame
@@ -36,13 +32,6 @@ public class PlayerAttack : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.E) && cdTimer > attackCD && playerMovement.canAttack())){
 
             ShootKunai();
-
-        }
-
-        if ((Input.GetKeyDown(KeyCode.Q) && cdTimer > attackCD && playerMovement.canAttack() && playerManager.canSecondaryAttack()))
-        {
-
-            PushBlackHole();
 
         }
 
@@ -77,13 +66,33 @@ public class PlayerAttack : MonoBehaviour
         return 0;
     }
 
-    void PushBlackHole()
+    public void PushBlackHole()
     {
-        cdTimer = 0;
-        animator.SetTrigger("attack");
 
-        blackhole.SetActive(true);
-        blackhole.transform.position = firepoint.position;
-        blackhole.GetComponent<BlackHole>().SetDirection(Mathf.Sign(transform.localScale.x));
+        playerManager = PlayerManager.instance;
+        if (cdTimer > attackCD && playerMovement.canAttack() && playerManager.canPushBlackHole())
+        {
+
+            cdTimer = 0;
+            animator.SetTrigger("attack");
+            int blackHoleNum = findBlackhole();
+
+            blackholes[blackHoleNum].SetActive(true);
+            blackholes[blackHoleNum].transform.position = firepoint.position;
+            blackholes[blackHoleNum].GetComponent<BlackHole>().SetDirection(Mathf.Sign(transform.localScale.x));
+
+        }
+    }
+
+    private int findBlackhole()
+    {
+        for (int i = 0; i < blackholes.Length; i++)
+        {
+            if (!blackholes[i].activeInHierarchy)
+            {
+                return i;
+            }
+        }
+        return 0;
     }
 }
