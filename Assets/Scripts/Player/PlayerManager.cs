@@ -66,17 +66,18 @@ public class PlayerManager: MonoBehaviour
         trail = GetComponent<TrailRenderer>();
         trail.enabled = false;
         player = transform;
-        respawnPt = transform.position;
         levelManager = LevelManager.instance;
 
         originalSpeed = speed;
         originalGravity = gravity;
 
+        rb.transform.position = levelManager.spawnPosition.position;
 
     }
 
     void Update()
     {
+
         if (!alive)
         {
             gameObject.SetActive(false);
@@ -139,6 +140,10 @@ public class PlayerManager: MonoBehaviour
         fallDetector.transform.position = new Vector2(transform.position.x, fallDetector.transform.position.y);
     }
 
+    public void UpdateRespawn()
+    {
+        respawnPt = transform.position;
+    }
     private bool IsGrounded()
     {
         RaycastHit2D rayCastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
