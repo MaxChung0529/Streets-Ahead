@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class RedMovement : MonoBehaviour
 {
-
-
     [SerializeField] private float speed;
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask blackholeLayer;

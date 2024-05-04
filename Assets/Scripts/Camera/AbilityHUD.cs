@@ -41,12 +41,12 @@ public class AbilityHUD : MonoBehaviour
             case "Blackhole":
                 if (onOff)
                 {
-                    blackholeCD.fillAmount = 1;
-
                     if (currentImage != null)
                     {
                         currentImage.fillAmount = 0;
                     }
+
+                    blackholeCD.fillAmount = 1;
 
                     currentImage = blackholeCD;
                 }

@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] public LayerMask groundLayer;
     [SerializeField] public LayerMask wallLayer;
     [SerializeField] public LayerMask platformLayer;
-    [SerializeField] public LayerMask utilLayer;
+    [SerializeField] public LayerMask utilLayer;    
     private float playerScale = 0.4f;
     private bool grounded;
 
@@ -237,16 +237,17 @@ public class PlayerMovement : MonoBehaviour
 
     private bool onWall()
     {
-        RaycastHit2D rayCastHitWall = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
+        //RaycastHit2D rayCastHitWall = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, new Vector2(transform.localScale.x, 0), 0.1f, wallLayer);
 
         //RaycastHit2D rayCastHitLeft = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.left, 0.1f, platformLayer);
         //RaycastHit2D rayCastHitRight = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.right, 0.1f, platformLayer);
 
-        //return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.1f, wallLayer);
 
 
         //return rayCastHitWall.collider != null || rayCastHitLeft.collider != null || rayCastHitRight.collider != null;
-        return rayCastHitWall.collider != null;
+
+        //return rayCastHitWall.collider != null;
     }
 
     private bool CanDash()

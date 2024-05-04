@@ -9,6 +9,7 @@ public class Kunai : MonoBehaviour
     private bool hit;
     private bool hitWall;
     private BoxCollider2D boxCollider;
+    private Rigidbody2D rb;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
 
@@ -23,6 +24,7 @@ public class Kunai : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
@@ -72,6 +74,13 @@ public class Kunai : MonoBehaviour
     private void Deactivate()
     {
         gameObject.SetActive(false);
+    }
+
+    public void Freeze()
+    {
+        boxCollider.enabled = false;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        
     }
     
 }

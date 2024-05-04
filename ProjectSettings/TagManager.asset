@@ -18,6 +18,7 @@ TagManager:
   - Lightning
   - Moonwalk
   - Checkpoint
+  - Dummy
   layers:
   - Default
   - TransparentFX

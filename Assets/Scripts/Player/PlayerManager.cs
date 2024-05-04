@@ -196,6 +196,7 @@ public class PlayerManager: MonoBehaviour
         {
             blackholeCount = 3;
             toolName = "Blackhole";
+            holdingTool = null;
             hud.UpdateSecondary(toolName, true);
             collision.gameObject.SetActive(false);
         }
