@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
 
-    [SerializeField] private float attackCD;
+    [SerializeField] public float attackCD;
+    public float cdTimer = Mathf.Infinity;
     private Animator animator;
     private PlayerMovement playerMovement;
-    private float cdTimer = Mathf.Infinity;
 
     [Header("Projectile")]
     [SerializeField] private Transform firepoint;
@@ -16,12 +16,14 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private GameObject[] blackholes;
 
     private PlayerManager playerManager;
+    private AbilityHUD hud;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         playerMovement = GetComponent<PlayerMovement>();
+        hud = GameObject.Find("HUD").GetComponent<AbilityHUD>();
     }
 
     // Update is called once per frame
@@ -32,10 +34,19 @@ public class PlayerAttack : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.E) && cdTimer > attackCD && playerMovement.canAttack())){
 
             ShootKunai();
+            hud.UpdateKunai(false);
 
         }
 
         cdTimer += Time.deltaTime;
+    }
+
+    public void KunaiCooledDown()
+    {
+        if (cdTimer > attackCD)
+        {
+            hud.UpdateKunai(true);
+        }
     }
 
     void ShootKunai()

@@ -49,9 +49,10 @@ public class RedMovement : MonoBehaviour
 
         if (dead)
         {
-            //gameObject.SetActive(false);
-            //capsuleCollider.enabled = false;
-            rb.constraints = RigidbodyConstraints2D.None;
+            //if (!GetComponent<SpriteRenderer>().isVisible)
+            //{
+            //    gameObject.SetActive(false);
+            //}
             return;
         }
 
@@ -78,24 +79,37 @@ public class RedMovement : MonoBehaviour
 
         if (!dead && knockbackCounter <= 0)
         {
-            //rb.velocity = (target.position - transform.position).normalized * speed;
             MoveInDir(dir);
         }
 
         if (SeePlayer())
         {
-            speed = originalSpeed * 1.02f;
+            speed = originalSpeed * 2f;
         }
+    }
+
+    private void Death()
+    {
+        rb.constraints = RigidbodyConstraints2D.None;
+        rb.gravityScale *= 10;
+        boxCollider.enabled = false;
+        rb.AddForce(Vector3.right * 12, ForceMode2D.Impulse);
+        animator.SetBool("Die", true); 
+    }
+
+    private void Deactivate()
+    {
+        animator.enabled = false;
     }
 
     public void MoveInDir(int direction)
     {
-            //Face direction
-            rb.transform.localScale = new Vector3(Mathf.Abs(initScale.x) * direction, initScale.y, initScale.z);
+        //Face direction
+        rb.transform.localScale = new Vector3(Mathf.Abs(initScale.x) * direction, initScale.y, initScale.z);
 
-            //Move in direction
-            rb.transform.position = new Vector3(rb.transform.position.x + Time.deltaTime + direction * speed,
-                rb.transform.position.y, rb.transform.position.z);
+        //Move in direction
+        rb.transform.position = new Vector3(rb.transform.position.x + Time.deltaTime + direction * speed,
+        rb.transform.position.y, rb.transform.position.z);
     }
 
     public void Sucked()
@@ -119,19 +133,8 @@ public class RedMovement : MonoBehaviour
         return hit.collider != null;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(boxCollider.bounds.center, boxCollider.bounds.size);
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Weapon")
-        {
-            dead = true;
-        }
-
 
         if (collision.gameObject.tag == "Wall")
         {
@@ -151,12 +154,7 @@ public class RedMovement : MonoBehaviour
                 Sucked();
             }
 
-            //Let Red freefall
-            //rb.constraints = RigidbodyConstraints2D.None;
-            //rb.AddForce(Vector3.right * 25);
-            //rb.AddForce(Vector3.up * 25);
-
-            //gameObject.SetActive(false);
+            Death();
         }
 
     }

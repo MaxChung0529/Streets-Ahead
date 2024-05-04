@@ -32,6 +32,8 @@ public class PlayerManager: MonoBehaviour
     public GameObject fallDetector;
 
     public Tools holdingTool;
+    private AbilityHUD hud;
+    private string toolName;
 
     [Header("Stat")]
     public bool alive = true;
@@ -64,6 +66,9 @@ public class PlayerManager: MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         trail = GetComponent<TrailRenderer>();
+
+        hud = GameObject.Find("HUD").GetComponent<AbilityHUD>();
+
         trail.enabled = false;
         player = transform;
         levelManager = LevelManager.instance;
@@ -84,22 +89,29 @@ public class PlayerManager: MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        attackScript.KunaiCooledDown();
 
-            Debug.Log(holdingTool);
-            Debug.Log(blackholeCount);
+        if (Input.GetKeyDown(KeyCode.Q)) {
 
             if (holdingTool != null)
             {
                 holdingTool.Activate();
                 holdingTool = null;
+                hud.UpdateSecondary(toolName, false);
             }else if (blackholeCount > 0)
             {
                 attackScript.PushBlackHole();
+                if (blackholeCount > 0)
+                {
+                    hud.UpdateSecondary(toolName, true);
+                }else
+                {
+                    hud.UpdateSecondary(toolName, false);
+                }
             }
         }
 
-        IsGrounded();
+        //IsGrounded();
         
         //SpeedUp activated
         if (spedUp)
@@ -148,7 +160,6 @@ public class PlayerManager: MonoBehaviour
     {
         RaycastHit2D rayCastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
 
-        //return rayCastHit.collider != null;
         onGround = rayCastHit.collider != null;
 
         if (onGround == true)
@@ -184,24 +195,32 @@ public class PlayerManager: MonoBehaviour
         if (collision.gameObject.tag == "Blackhole")
         {
             blackholeCount = 3;
+            toolName = "Blackhole";
+            hud.UpdateSecondary(toolName, true);
             collision.gameObject.SetActive(false);
         }
 
         if (collision.gameObject.tag == "Shield")
         {
             holdingTool = new Shield();
+            toolName = "Shield";
+            hud.UpdateSecondary(toolName, true);
             collision.gameObject.SetActive(false);
         }
 
         if (collision.gameObject.tag == "Lightning")
         {
             holdingTool = new Lightning();
+            toolName = "Lightning";
+            hud.UpdateSecondary(toolName, true);
             collision.gameObject.SetActive(false);
         }
 
         if (collision.gameObject.tag == "Moonwalk")
         {
             holdingTool = new Moonwalk();
+            toolName = "Moonwalk";
+            hud.UpdateSecondary(toolName, true);
             collision.gameObject.SetActive(false);
 
         }
