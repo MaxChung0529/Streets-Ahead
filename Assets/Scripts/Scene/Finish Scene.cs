@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class FinishScene : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class FinishScene : MonoBehaviour
     [SerializeField] private GameObject finishedOverlay;
     [SerializeField] private GameObject[] finalLotuses;
     [SerializeField] private Sprite pickedLotus;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     private void Start()
     {
@@ -26,6 +28,8 @@ public class FinishScene : MonoBehaviour
             //NextScene();
             finishedOverlay.SetActive(true);
             var num = LevelManager.instance.lotusCount;
+
+            levelText.text = "You are now a level " + num + " laser lotus!!!";
 
             for (int i = 0; i < num; i++)
             {

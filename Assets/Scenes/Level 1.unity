@@ -513,6 +513,7 @@ MonoBehaviour:
   - {fileID: 1509208547}
   - {fileID: 1587724876}
   pickedLotus: {fileID: 21300000, guid: ddd72de4eaaf5dc41b0c3ba1c5b73563, type: 3}
+  levelText: {fileID: 1284031443}
 --- !u!61 &48173756
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5978,7 +5979,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &559299411
 MonoBehaviour:
   m_ObjectHideFlags: 0

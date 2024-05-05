@@ -4433,6 +4433,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thisScene: 1
+  finishedOverlay: {fileID: 0}
+  finalLotuses: []
+  pickedLotus: {fileID: 0}
+  levelText: {fileID: 0}
 --- !u!61 &521196403
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6877,7 +6881,7 @@ Transform:
   m_GameObject: {fileID: 1106974285}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 40.67, y: -2.74, z: 0}
+  m_LocalPosition: {x: -7.4, y: -2.74, z: 0}
   m_LocalScale: {x: 0.39, y: 0.39, z: 0.39}
   m_ConstrainProportionsScale: 1
   m_Children:
