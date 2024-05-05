@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedDeathState : MonoBehaviour
+public class RedDeathState : IRedState
 {
-    // Start is called before the first frame update
-    void Start()
+    public void Enter(Red red)
     {
-        
+        red.rb.constraints = RigidbodyConstraints2D.None;
+        red.rb.gravityScale *= 10;
+        red.boxCollider.enabled = false;
+        red.rb.AddForce(Vector3.right * 12, ForceMode2D.Impulse);
+        red.animator.SetBool("Die", true);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Exit(Red red)
     {
-        
+        throw new System.NotImplementedException();
+    }
+
+    public IRedState Tick()
+    {
+        return null;
     }
 }

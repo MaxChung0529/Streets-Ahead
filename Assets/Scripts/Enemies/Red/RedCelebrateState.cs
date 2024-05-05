@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class RedCelebrateState : IRedState
 {
-    public void Enter()
+
+    public void Enter(Red red)
     {
-        throw new System.NotImplementedException();
+        red.animator.SetTrigger("Celebrate");
     }
 
-    public void Exit()
+    public void Exit(Red red)
     {
         throw new System.NotImplementedException();
     }
 
     public IRedState Tick()
     {
-        throw new System.NotImplementedException();
+        return null;
     }
 }

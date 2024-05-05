@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IRedState
 {
     public IRedState Tick();
-    public void Enter();
-    public void Exit();
+    public void Enter(Red red);
+    public void Exit(Red red);
 
 }

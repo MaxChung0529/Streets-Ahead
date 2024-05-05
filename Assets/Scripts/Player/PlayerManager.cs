@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerManager: MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class PlayerManager: MonoBehaviour
     private int lotusCount = 0;
 
     [Header("Blackhole")]
-    [SerializeField] public GameObject[] blackholes;
     public int blackholeCount = 0;
 
     public bool shielded = false;
@@ -69,8 +69,12 @@ public class PlayerManager: MonoBehaviour
 
         hud = GameObject.Find("HUD").GetComponent<AbilityHUD>();
 
-        var hudOverlay = GameObject.Find("HUD");
-        hudOverlay.SetActive(false);
+        if (SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            var hudOverlay = GameObject.Find("HUD");
+            hudOverlay.SetActive(false);
+        }
+
 
         trail.enabled = false;
         player = transform;
@@ -242,7 +246,7 @@ public class PlayerManager: MonoBehaviour
                 alive = false;
             }else
             {
-                collision.gameObject.GetComponent<RedMovement>().KnockBack();
+                collision.gameObject.GetComponent<Red>().StartKnockBack();
                 shielded = false;
 
                 var checkTool = holdingTool as Shield;

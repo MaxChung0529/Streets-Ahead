@@ -24,16 +24,21 @@ public class FinishScene : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Time.timeScale = 0;
-            //NextScene();
-            finishedOverlay.SetActive(true);
-            var num = LevelManager.instance.lotusCount;
 
-            levelText.text = "You are now a level " + num + " laser lotus!!!";
-
-            for (int i = 0; i < num; i++)
+            if (SceneManager.GetActiveScene().name != "Tutorial")
             {
-                finalLotuses[i].GetComponent<SpriteRenderer>().sprite = pickedLotus;
+                finishedOverlay.SetActive(true);
+                var num = LevelManager.instance.lotusCount;
+
+                levelText.text = "You are now a level " + num + " laser lotus!!!";
+
+                for (int i = 0; i < num; i++)
+                {
+                    finalLotuses[i].GetComponent<SpriteRenderer>().sprite = pickedLotus;
+                }
+            }else
+            {
+                NextScene();
             }
 
         }

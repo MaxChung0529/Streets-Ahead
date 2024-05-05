@@ -2,19 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RedPatrolState : IRedState
+public class RedChasingState : IRedState
 {
     private Red _red;
-
     public void Enter(Red red)
     {
         _red = red;
-        _red.SlowDown();
+        _red.Chase();
     }
 
     public IRedState Tick()
     {
-        _red.MoveInDir();   
+        _red.MoveInDir();
         if (!GameObject.Find("Player").GetComponent<PlayerManager>().alive)
         {
             return new RedCelebrateState();
@@ -23,9 +22,9 @@ public class RedPatrolState : IRedState
         {
             return new RedDeathState();
         }
-        if (_red.SeePlayer())
+        if (!_red.SeePlayer())
         {
-            return new RedChasingState();
+            return new RedPatrolState();
         }
 
         return null;

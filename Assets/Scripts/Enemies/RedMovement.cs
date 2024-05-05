@@ -11,7 +11,6 @@ public class RedMovement : MonoBehaviour
 
     private Rigidbody2D rb;
     private bool dead = false;
-    private bool collided = false;
     private Animator animator;
     private CapsuleCollider2D capsuleCollider;
     private BoxCollider2D boxCollider;
@@ -45,22 +44,6 @@ public class RedMovement : MonoBehaviour
     void Update()
     {
 
-        if (dead)
-        {
-            //if (!GetComponent<SpriteRenderer>().isVisible)
-            //{
-            //    gameObject.SetActive(false);
-            //}
-            return;
-        }
-
-        //Celebrate if player is killed
-        if (!GameObject.Find("Player").GetComponent<PlayerManager>().alive)
-        {
-            animator.SetTrigger("Celebrate");
-            return;
-        }
-
         if (knockbackCounter > 0)
         {
             knockbackCounter -= Time.deltaTime;
@@ -74,46 +57,6 @@ public class RedMovement : MonoBehaviour
                 speed = Mathf.Abs(speed * 0.5f);
             }
         }
-
-        if (!dead && knockbackCounter <= 0)
-        {
-            MoveInDir(dir);
-        }
-
-        if (SeePlayer())
-        {
-            speed = originalSpeed * 2f;
-        }
-    }
-
-    private void Death()
-    {
-        rb.constraints = RigidbodyConstraints2D.None;
-        rb.gravityScale *= 10;
-        boxCollider.enabled = false;
-        rb.AddForce(Vector3.right * 12, ForceMode2D.Impulse);
-        animator.SetBool("Die", true); 
-    }
-
-    private void Deactivate()
-    {
-        animator.enabled = false;
-    }
-
-    public void MoveInDir(int direction)
-    {
-        //Face direction
-        rb.transform.localScale = new Vector3(Mathf.Abs(initScale.x) * direction, initScale.y, initScale.z);
-
-        //Move in direction
-        rb.transform.position = new Vector3(rb.transform.position.x + Time.deltaTime + direction * speed,
-        rb.transform.position.y, rb.transform.position.z);
-    }
-
-    public void Sucked()
-    {
-        dead = true;
-        animator.SetBool("Sucked", true);
     }
 
     public void KnockBack()
@@ -123,40 +66,4 @@ public class RedMovement : MonoBehaviour
         Vector2 kbForce = new Vector2(-100 * (rb.transform.position.x + Time.deltaTime + dir * speed), rb.velocity.y);
         rb.AddForce(kbForce, ForceMode2D.Force);
     }
-
-    private bool SeePlayer()
-    {
-        RaycastHit2D hit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.left, 0, playerLayer);
-
-        return hit.collider != null;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-
-        if (collision.gameObject.tag == "Wall")
-        {
-            dir *= -1;
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-
-        if (collision.gameObject.tag == "Weapon")
-        {
-            dead = true;
-
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Blackhole"))
-            {
-                Sucked();
-            }
-
-            Death();
-        }
-
-    }
-
-    
-
 }
