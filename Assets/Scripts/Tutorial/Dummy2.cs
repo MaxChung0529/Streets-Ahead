@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dummy1 : MonoBehaviour
+public class Dummy2 : MonoBehaviour
 {
     [SerializeField] private GameObject door;
     private BoxCollider2D boxCollider;
@@ -16,9 +16,13 @@ public class Dummy1 : MonoBehaviour
     {
         if (collision.gameObject.tag == "Weapon")
         {
-            boxCollider.enabled = false;
-            door.SetActive(false);
             collision.gameObject.SetActive(false);
+        }
+
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Blackhole"))
+        {
+            gameObject.SetActive(false);
+            door.SetActive(false);
         }
     }
 

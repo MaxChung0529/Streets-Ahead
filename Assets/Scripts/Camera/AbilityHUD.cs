@@ -12,8 +12,8 @@ public class AbilityHUD : MonoBehaviour
     public Image shieldCD;
     public Image currentImage = null;
 
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         primaryAbility.fillAmount = 0;
         lightningCD.fillAmount = 0;

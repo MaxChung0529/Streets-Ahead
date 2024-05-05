@@ -69,6 +69,9 @@ public class PlayerManager: MonoBehaviour
 
         hud = GameObject.Find("HUD").GetComponent<AbilityHUD>();
 
+        var hudOverlay = GameObject.Find("HUD");
+        hudOverlay.SetActive(false);
+
         trail.enabled = false;
         player = transform;
         levelManager = LevelManager.instance;
