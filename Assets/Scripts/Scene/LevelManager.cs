@@ -13,16 +13,16 @@ public class LevelManager : MonoBehaviour
     [Header("Checkpoint")]
     public GameObject checkPoint;
     private bool reachedCheckPoint = false;
-    [SerializeField] public Sprite checkedFlag;
+    [SerializeField] private Sprite checkedFlag;
 
     public GameObject exitPortal;
     public GameObject enterPortal;
     public Transform spawnPosition;
 
     [Header("Lotus")]
-    public TextMeshProUGUI lotusHeld;
-
-    int lotusCount = 0;
+    [SerializeField] private GameObject[] lotuses;
+    [SerializeField] private Sprite pickedLotus;
+    public int lotusCount = 0;
 
     private void Awake()
     {
@@ -31,7 +31,6 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        lotusHeld.text = "X " + lotusCount.ToString();
         PopupUI.SetActive(false);
         spawnPosition = enterPortal.transform;
 
@@ -82,7 +81,7 @@ public class LevelManager : MonoBehaviour
     public void addLotus()
     {
         lotusCount++;
-        lotusHeld.text = "X " + lotusCount.ToString();
+        lotuses[lotusCount - 1].GetComponent<SpriteRenderer>().sprite = pickedLotus;
     }
 
     public void Check()
