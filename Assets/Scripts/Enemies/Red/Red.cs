@@ -10,6 +10,7 @@ public class Red: MonoBehaviour
     [SerializeField] private LayerMask playerLayer;
 
     public BoxCollider2D boxCollider;
+    private CapsuleCollider2D capsuleCollider;
     public Rigidbody2D rb;
     public Vector3 initScale;
     public Animator animator;
@@ -24,6 +25,7 @@ public class Red: MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
         initScale = rb.transform.localScale;
         currentState.Enter(this);
@@ -70,6 +72,8 @@ public class Red: MonoBehaviour
     private void Deactivate()
     {
         animator.enabled = false;
+        rb.constraints = RigidbodyConstraints2D.FreezeAll;
+        capsuleCollider.enabled = false;
     }
 
     public void Chase()
