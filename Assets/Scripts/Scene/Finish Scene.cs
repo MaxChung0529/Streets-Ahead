@@ -22,6 +22,8 @@ public class FinishScene : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         finishedOverlay.SetActive(false);
+        totalScore = 0;
+        thisScene = SceneManager.GetActiveScene().buildIndex - 1;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,7 +60,16 @@ public class FinishScene : MonoBehaviour
 
     public void NextScene()
     {
+        if (SceneManager.GetActiveScene().name != "Tutorial")
+        {
+            LevelManager.instance.SaveGame();
+        }
+        var newSave = SaveLoadSystem.LoadGame();
+        newSave.position = new float[] { 0f, 0f, 0f };
+        newSave.totalScore += totalScore;
         SceneManager.LoadScene(thisScene + 1);
+
+        SaveLoadSystem.SaveGame(newSave);
     }
 
 }

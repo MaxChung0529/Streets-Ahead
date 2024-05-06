@@ -63,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        Debug.Log(onWall());
+
         float inputX = Input.GetAxis("Horizontal");
         bool jumpInput = Input.GetButton("Jump");
 
@@ -222,9 +224,6 @@ public class PlayerMovement : MonoBehaviour
 
         RaycastHit2D rayCastHitUtil = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.down, 0.1f, utilLayer);
 
-        //RaycastHit2D rayCastHitLeft = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.left, 0.1f, groundLayer);
-
-        //return rayCastHit.collider != null;
         grounded = rayCastHitFloor.collider != null || rayCastHitPlatform.collider != null || rayCastHitUtil.collider != null;
 
         if (grounded == true)

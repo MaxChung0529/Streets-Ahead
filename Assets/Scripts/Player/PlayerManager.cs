@@ -57,6 +57,9 @@ public class PlayerManager: MonoBehaviour
     public float gravity = 2f;
     private float originalGravity = 0f;
 
+    [Header("Death")]
+    public int deathCount = 0;
+
 
     private void Start()
     {
@@ -83,7 +86,11 @@ public class PlayerManager: MonoBehaviour
         originalSpeed = speed;
         originalGravity = gravity;
 
-        rb.transform.position = levelManager.spawnPosition.position;
+        var loadedSave = SaveLoadSystem.LoadGame();
+        if (loadedSave.position[0] != 0f || loadedSave.position[1] != 0f || loadedSave.position[2] != 0f)
+        {
+            rb.position = new Vector3(loadedSave.position[0], loadedSave.position[1], loadedSave.position[2]);
+        }
 
     }
 
@@ -188,6 +195,7 @@ public class PlayerManager: MonoBehaviour
         if (collision.gameObject.tag == "FallDetector")
         {
             transform.position = respawnPt;
+            deathCount++;
         }
     }
 
@@ -195,7 +203,7 @@ public class PlayerManager: MonoBehaviour
     {
         if (collision.gameObject.tag == "Lotus")
         {
-            levelManager.addLotus();
+            levelManager.AddLotus();
             collision.gameObject.SetActive(false);
         }
 

@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     public GameObject PopupUI;
     public PlayerManager player;
+    public GameObject gameSaved;
 
     [Header("Checkpoint")]
     public GameObject checkPoint;
@@ -21,6 +22,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Lotus")]
     [SerializeField] private GameObject[] lotuses;
+    [SerializeField] private GameObject[] lotusesLoot;
     [SerializeField] private Sprite pickedLotus;
     public int lotusCount = 0;
 
@@ -31,6 +33,8 @@ public class LevelManager : MonoBehaviour
     public int minute = 0;
     public int second = 0;
 
+    private int currentLevel;
+
     private void Awake()
     {
         instance = this;
@@ -38,10 +42,25 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        PopupUI.SetActive(false);
-        spawnPosition = enterPortal.transform;
+        Application.targetFrameRate = 60;
 
+        PopupUI.SetActive(false);
         player = GameObject.Find("Player").GetComponent<PlayerManager>();
+
+        currentLevel = SceneManager.GetActiveScene().buildIndex;
+
+        var gameSave = SaveLoadSystem.LoadGame();
+
+        if (gameSave != null)
+        {
+            foreach (LevelData level in gameSave.levelDatas)
+            {
+                if (level.level == currentLevel)
+                {
+                    SetScene(level);
+                }
+            }
+        }
     }
 
     private void Update()
@@ -87,6 +106,33 @@ public class LevelManager : MonoBehaviour
         RetryLevel();
     }
 
+    public void SetScene(LevelData lvl)
+    {
+        minute = lvl.secondsPassed / 60;
+        second = lvl.secondsPassed % 60;
+        var lotusNum = lvl.lotusCount;
+        for (int i = 0; i < lotusNum; i++)
+        {
+            lotusesLoot[i].SetActive(false);
+            AddLotus();
+        }
+    }
+
+    public void AddLotus()
+    {
+        lotusCount++;
+        lotuses[lotusCount - 1].GetComponent<SpriteRenderer>().sprite = pickedLotus;
+    }
+
+    public void Check()
+    {
+        checkPoint.GetComponent<SpriteRenderer>().sprite = checkedFlag;
+        checkPoint.GetComponent<BoxCollider2D>().enabled = false;
+        reachedCheckPoint = true;
+        spawnPosition = checkPoint.transform;
+        player.UpdateRespawn();
+    }
+
     public void RetryLevel()
     {
         Scene currentScene = SceneManager.GetActiveScene();
@@ -105,6 +151,11 @@ public class LevelManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void Okay()
+    {
+        gameSaved.SetActive(false);
+    }
+
     public void ConfirmExit()
     {
         Menu();
@@ -115,18 +166,34 @@ public class LevelManager : MonoBehaviour
         PopupUI.SetActive(false);
     }
 
-    public void addLotus()
+    public void SaveGame()
     {
-        lotusCount++;
-        lotuses[lotusCount - 1].GetComponent<SpriteRenderer>().sprite = pickedLotus;
-    }
+        GameData gameData = SaveLoadSystem.LoadGame();
+        var tmpLevelDatas = new List<LevelData>();
+        var levelData = new LevelData(currentLevel, lotusCount, minute * 60 + second);
+        if (gameData.levelDatas.Count > 0)
+        {
+            foreach (LevelData lvl in gameData.levelDatas)
+            {
+                if (lvl.level == currentLevel)
+                {
+                    tmpLevelDatas.Add(levelData);
+                }else
+                {
+                    tmpLevelDatas.Add(lvl);
+                }
+            }
+            gameData.levelDatas = tmpLevelDatas;
+        }else
+        {
+            gameData.levelDatas.Add(levelData);
+        }
+        gameData.deathCount += player.deathCount;
+        gameData.position[0] = player.player.position.x;
+        gameData.position[1] = player.player.position.y;
+        gameData.position[2] = player.player.position.z;
 
-    public void Check()
-    {
-        checkPoint.GetComponent<SpriteRenderer>().sprite = checkedFlag;
-        checkPoint.GetComponent<BoxCollider2D>().enabled = false;
-        reachedCheckPoint = true;
-        spawnPosition = checkPoint.transform;
-        player.UpdateRespawn();
+        SaveLoadSystem.SaveGame(gameData);
+        gameSaved.SetActive(true);
     }
 }
