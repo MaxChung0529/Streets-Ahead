@@ -14,6 +14,10 @@ public class FinishScene : MonoBehaviour
     [SerializeField] private Sprite pickedLotus;
     [SerializeField] private TextMeshProUGUI levelText;
 
+    [Header("Score")]
+    [SerializeField] private TextMeshProUGUI score;
+    public int totalScore;
+
     private void Start()
     {
         boxCollider = GetComponent<BoxCollider2D>();
@@ -36,6 +40,14 @@ public class FinishScene : MonoBehaviour
                 {
                     finalLotuses[i].GetComponent<SpriteRenderer>().sprite = pickedLotus;
                 }
+
+                var seconds = LevelManager.instance.minute * 60 + LevelManager.instance.second;
+                var minuteUsed = (seconds / 60f).ToString("#.##");
+
+                totalScore = Mathf.RoundToInt(num * 1000 * (1 / float.Parse(minuteUsed)));
+
+                score.text = "Score: " + num + " Lotuses x " + minuteUsed + " minutes = " + totalScore;
+
             }else
             {
                 NextScene();

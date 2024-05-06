@@ -24,6 +24,13 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Sprite pickedLotus;
     public int lotusCount = 0;
 
+    [Header("Timer")]
+    [SerializeField] private TextMeshProUGUI timer;
+    private float timePassed = 0f;
+    private float oldTime = 0f;
+    public int minute = 0;
+    public int second = 0;
+
     private void Awake()
     {
         instance = this;
@@ -35,6 +42,36 @@ public class LevelManager : MonoBehaviour
         spawnPosition = enterPortal.transform;
 
         player = GameObject.Find("Player").GetComponent<PlayerManager>();
+    }
+
+    private void Update()
+    {
+        timePassed += Time.deltaTime;
+        if (timePassed - oldTime > 1f)
+        {
+            addSecond();
+            oldTime = timePassed;
+        }
+    }
+
+    private void addSecond()
+    {
+        if (second < 59)
+        {
+            second++;
+        }else
+        {
+            second = 0;
+            minute++;
+        }
+        if (minute <= 99)
+        {
+            timer.text = minute.ToString("D2") + ":" + second.ToString("D2");
+        }
+        else
+        {
+            timer.text = minute.ToString("D3") + ":" + second.ToString("D2");
+        }
     }
 
     public void GoCheckPoint()
