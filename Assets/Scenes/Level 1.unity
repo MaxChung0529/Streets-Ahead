@@ -1586,7 +1586,7 @@ MonoBehaviour:
   - {fileID: 2050589220}
   pickedLotus: {fileID: 21300000, guid: ddd72de4eaaf5dc41b0c3ba1c5b73563, type: 3}
   lotusCount: 0
-  timer: {fileID: 307232465}
+  timerText: {fileID: 307232465}
   minute: 0
   second: 0
 --- !u!4 &249486551

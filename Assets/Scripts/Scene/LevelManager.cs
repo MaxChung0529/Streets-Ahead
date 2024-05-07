@@ -27,7 +27,7 @@ public class LevelManager : MonoBehaviour
     public int lotusCount = 0;
 
     [Header("Timer")]
-    [SerializeField] private TextMeshProUGUI timer;
+    [SerializeField] private TextMeshProUGUI timerText;
     private float timePassed = 0f;
     private float oldTime = 0f;
     public int minute = 0;
@@ -47,11 +47,11 @@ public class LevelManager : MonoBehaviour
         PopupUI.SetActive(false);
         player = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-        currentLevel = SceneManager.GetActiveScene().buildIndex;
+        currentLevel = SceneManager.GetActiveScene().buildIndex - 1;
 
         var gameSave = SaveLoadSystem.LoadGame();
 
-        if (gameSave != null)
+        if (gameSave.levelDatas.Count > 0)
         {
             foreach (LevelData level in gameSave.levelDatas)
             {
@@ -85,11 +85,11 @@ public class LevelManager : MonoBehaviour
         }
         if (minute <= 99)
         {
-            timer.text = minute.ToString("D2") + ":" + second.ToString("D2");
+            timerText.text = minute.ToString("D2") + ":" + second.ToString("D2");
         }
         else
         {
-            timer.text = minute.ToString("D3") + ":" + second.ToString("D2");
+            timerText.text = minute.ToString("D3") + ":" + second.ToString("D2");
         }
     }
 
@@ -108,20 +108,44 @@ public class LevelManager : MonoBehaviour
 
     public void SetScene(LevelData lvl)
     {
-        minute = lvl.secondsPassed / 60;
-        second = lvl.secondsPassed % 60;
-        var lotusNum = lvl.lotusCount;
+        if (lvl.secondsPassed > 0)
+        {
+            minute = lvl.secondsPassed / 60;
+            second = lvl.secondsPassed % 60;
+        }else
+        {
+            minute = 0;
+            second = 0;
+        }
+        var lotusNum = lvl.lotus.Count;
         for (int i = 0; i < lotusNum; i++)
         {
-            lotusesLoot[i].SetActive(false);
-            AddLotus();
+            for (int j = 0; j < 3; j++)
+            {
+                if (lvl.lotus[i] == j)
+                {
+                    lotusesLoot[j].SetActive(false);
+                    lotuses[j].GetComponent<SpriteRenderer>().sprite = pickedLotus;
+                    lotusCount++;
+                }
+            }
         }
     }
 
-    public void AddLotus()
+    public void AddLotus(GameObject collectedLotus)
     {
         lotusCount++;
-        lotuses[lotusCount - 1].GetComponent<SpriteRenderer>().sprite = pickedLotus;
+        var index = 0;
+
+        for (int i = 0; i < lotusesLoot.Length; i++)
+        {
+            if (lotusesLoot[i] == collectedLotus)
+            {
+                index = i;
+            }
+        }
+
+        lotuses[index].GetComponent<SpriteRenderer>().sprite = pickedLotus;
     }
 
     public void Check()
@@ -170,7 +194,18 @@ public class LevelManager : MonoBehaviour
     {
         GameData gameData = SaveLoadSystem.LoadGame();
         var tmpLevelDatas = new List<LevelData>();
-        var levelData = new LevelData(currentLevel, lotusCount, minute * 60 + second);
+
+        var pickedLotus = new List<int>();
+
+        for (int i = 0; i < lotusesLoot.Length; i++)
+        {
+            if (lotusesLoot[i].activeInHierarchy == false)
+            {
+                pickedLotus.Add(i);
+            }
+        }
+
+        var levelData = new LevelData(currentLevel, pickedLotus, minute * 60 + second);
         if (gameData.levelDatas.Count > 0)
         {
             foreach (LevelData lvl in gameData.levelDatas)

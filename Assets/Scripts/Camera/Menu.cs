@@ -23,14 +23,14 @@ public class Menu : MonoBehaviour
         gameSaveWindow.SetActive(true);
         var save = SaveLoadSystem.LoadGame();
         if (save.levelDatas.Count > 0) {
-            if (save.levelDatas[save.levelDatas.Count - 1].level > 1)
+            if (save.levelDatas[save.levelDatas.Count - 1].level > 0)
             {
-                gameSaveLevel.text = "Level: " + (save.levelDatas[save.levelDatas.Count - 1].level - 1);
+                gameSaveLevel.text = "Level: " + (save.levelDatas[save.levelDatas.Count - 1].level);
             }else
             {
                 gameSaveLevel.text = "Level: Tutorial";
             }
-            gameSaveLotus.text = "Lotus collected: " + save.levelDatas[save.levelDatas.Count - 1].lotusCount;
+            gameSaveLotus.text = "Lotus collected: " + save.levelDatas[save.levelDatas.Count - 1].lotus.Count;
         }
     }
 
@@ -42,7 +42,7 @@ public class Menu : MonoBehaviour
     public void LoadGame()
     {
         GameData save = SaveLoadSystem.LoadGame();
-        SceneManager.LoadScene(save.levelDatas[save.levelDatas.Count - 1].level);
+        SceneManager.LoadScene(save.levelDatas[save.levelDatas.Count - 1].level + 1);
     }
 
     public void QuitRequest()

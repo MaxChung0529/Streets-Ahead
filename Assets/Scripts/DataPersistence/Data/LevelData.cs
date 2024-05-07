@@ -6,13 +6,13 @@ using UnityEngine;
 public class LevelData
 { 
     public int level;
-    public int lotusCount;
+    public List<int> lotus;
     public int secondsPassed;
 
-    public LevelData(int _level, int _lotusCount, int _secondsPassed)
+    public LevelData(int _level, List<int> lotuses, int _secondsPassed)
     {
         level = _level;
-        lotusCount = _lotusCount;
+        lotus = lotuses;
         secondsPassed = _secondsPassed;
     }
 }

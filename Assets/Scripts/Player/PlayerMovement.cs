@@ -63,8 +63,6 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        Debug.Log(onWall());
-
         float inputX = Input.GetAxis("Horizontal");
         bool jumpInput = Input.GetButton("Jump");
 

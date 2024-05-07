@@ -203,7 +203,7 @@ public class PlayerManager: MonoBehaviour
     {
         if (collision.gameObject.tag == "Lotus")
         {
-            levelManager.AddLotus();
+            levelManager.AddLotus(collision.gameObject);
             collision.gameObject.SetActive(false);
         }
 
