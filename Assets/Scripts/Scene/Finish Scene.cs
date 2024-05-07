@@ -23,7 +23,7 @@ public class FinishScene : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
         finishedOverlay.SetActive(false);
         totalScore = 0;
-        thisScene = SceneManager.GetActiveScene().buildIndex - 1;
+        thisScene = SceneManager.GetActiveScene().buildIndex;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

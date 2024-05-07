@@ -7,13 +7,15 @@ public class PauseMenu : MonoBehaviour
 {
     public static bool isPaused = false;
     public GameObject pauseMenuUI;
-    public GameObject PopupUI;
+    public GameObject popupUI;
+    public GameObject settingsUI;
     private PlayerManager player;
 
     private void Start()
     {
         pauseMenuUI.SetActive(false);
-        PopupUI.SetActive(false);
+        popupUI.SetActive(false);
+        settingsUI.SetActive(false);
         player = GameObject.Find("Player").GetComponent<PlayerManager>();
     }
 
@@ -51,9 +53,19 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
     }
 
+    public void Settings()
+    {
+        settingsUI.SetActive(true);
+    }
+
+    public void CancelSettings()
+    {
+        settingsUI.SetActive(false);
+    }
+
     public void QuitRequest()
     {
-        PopupUI.SetActive(true);
+        popupUI.SetActive(true);
     }
 
     public void Menu()
@@ -69,6 +81,6 @@ public class PauseMenu : MonoBehaviour
 
     public void CancelExit()
     {
-        PopupUI.SetActive(false);
+        popupUI.SetActive(false);
     }
 }
