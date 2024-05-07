@@ -9,6 +9,7 @@ public class Menu : MonoBehaviour
 
     public GameObject confirmationWindow;
     public GameObject gameSaveWindow;
+    public GameObject settingsOverlay;
     public TextMeshProUGUI gameSaveLevel;
     public TextMeshProUGUI gameSaveLotus;
 
@@ -32,6 +33,16 @@ public class Menu : MonoBehaviour
             }
             gameSaveLotus.text = "Lotus collected: " + save.levelDatas[save.levelDatas.Count - 1].lotus.Count;
         }
+    }
+
+    public void Settings()
+    {
+        settingsOverlay.SetActive(true);
+    }
+
+    public void CloseSettings()
+    {
+        settingsOverlay.SetActive(false);
     }
 
     public void CancelLoadGame()

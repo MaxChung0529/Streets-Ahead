@@ -2334,6 +2334,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 792370015}
+  - {fileID: 416455835}
   - {fileID: 1529733617}
   m_Father: {fileID: 868954170}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3217,7 +3218,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 416455834}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
@@ -3225,11 +3226,11 @@ RectTransform:
   - {fileID: 1721772670}
   - {fileID: 2087033838}
   - {fileID: 452759062}
-  m_Father: {fileID: 792370015}
+  m_Father: {fileID: 309741842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 602, y: -26}
+  m_AnchoredPosition: {x: 173.94995, y: 24}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &416455836
@@ -3282,7 +3283,19 @@ MonoBehaviour:
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1303907419}
+        m_TargetAssemblyTypeName: VolumeChange, Assembly-CSharp
+        m_MethodName: ChangeVolume
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &441114571
 GameObject:
   m_ObjectHideFlags: 0
@@ -8179,8 +8192,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 416455835}
+  m_Children: []
   m_Father: {fileID: 309741842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
@@ -16672,6 +16684,7 @@ GameObject:
   - component: {fileID: 1303907415}
   - component: {fileID: 1303907414}
   - component: {fileID: 1303907418}
+  - component: {fileID: 1303907419}
   m_Layer: 5
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -16777,6 +16790,19 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 868954169}
   popupUI: {fileID: 441114571}
   settingsUI: {fileID: 309741841}
+--- !u!114 &1303907419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1303907413}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35f9cc67075968344a77fee25643fcb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeSlider: {fileID: 416455836}
 --- !u!1 &1308148966
 GameObject:
   m_ObjectHideFlags: 0
