@@ -2466,6 +2466,7 @@ MonoBehaviour:
   settingsOverlay: {fileID: 2131477251}
   gameSaveLevel: {fileID: 400525526}
   gameSaveLotus: {fileID: 367639140}
+  loadGameBtn: {fileID: 1402128242}
 --- !u!1 &1212832637
 GameObject:
   m_ObjectHideFlags: 0

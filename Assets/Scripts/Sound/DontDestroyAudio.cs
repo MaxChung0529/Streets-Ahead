@@ -5,11 +5,20 @@ using UnityEngine;
 public class DontDestroyAudio : MonoBehaviour
 {
 
-    [SerializeField] private List<AudioClip> bgm = new List<AudioClip>();
+    private static DontDestroyAudio instance;
 
     private void Awake()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        if (instance != null && instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }else
+        {
+            instance = this;
+        }
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
 

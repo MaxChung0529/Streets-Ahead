@@ -71,9 +71,12 @@ public class Red: MonoBehaviour
     }
     private void Deactivate()
     {
-        animator.enabled = false;
-        rb.constraints = RigidbodyConstraints2D.FreezeAll;
-        capsuleCollider.enabled = false;
+        capsuleCollider.excludeLayers += playerLayer;
+    }
+
+    private void PermaDeath()
+    {
+        animator.enabled = false;   
     }
 
     public void Chase()

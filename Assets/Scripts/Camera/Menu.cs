@@ -12,9 +12,11 @@ public class Menu : MonoBehaviour
     public GameObject settingsOverlay;
     public TextMeshProUGUI gameSaveLevel;
     public TextMeshProUGUI gameSaveLotus;
+    [SerializeField] GameObject loadGameBtn;
 
     public void StartNewGame()
     {
+        Time.timeScale = 1;
         SaveLoadSystem.NewGame();
         SceneManager.LoadScene(1);
     }
@@ -23,7 +25,11 @@ public class Menu : MonoBehaviour
     {
         gameSaveWindow.SetActive(true);
         var save = SaveLoadSystem.LoadGame();
-        if (save.levelDatas.Count > 0) {
+
+        //Only allow loading game save when the level isn't finished
+        if (save.levelDatas.Count > 0 && save.levelDatas[save.levelDatas.Count - 1].levelScore == 0)
+        {
+            Debug.Log(save.levelDatas[save.levelDatas.Count - 1].levelScore);
             if (save.levelDatas[save.levelDatas.Count - 1].level > 0)
             {
                 gameSaveLevel.text = "Level: " + (save.levelDatas[save.levelDatas.Count - 1].level);
@@ -32,6 +38,12 @@ public class Menu : MonoBehaviour
                 gameSaveLevel.text = "Level: Tutorial";
             }
             gameSaveLotus.text = "Lotus collected: " + save.levelDatas[save.levelDatas.Count - 1].lotus.Count;
+        }else
+        {
+            Debug.Log(save.levelDatas[save.levelDatas.Count - 1].levelScore);
+            gameSaveLevel.text = "No playable game save";
+            gameSaveLotus.enabled = false;
+            loadGameBtn.SetActive(false);
         }
     }
 

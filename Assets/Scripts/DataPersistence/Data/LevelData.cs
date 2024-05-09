@@ -8,11 +8,13 @@ public class LevelData
     public int level;
     public List<int> lotus;
     public int secondsPassed;
+    public int levelScore;
 
-    public LevelData(int _level, List<int> lotuses, int _secondsPassed)
+    public LevelData(int _level, List<int> lotuses, int _secondsPassed, int score)
     {
         level = _level;
         lotus = lotuses;
         secondsPassed = _secondsPassed;
+        levelScore = score;
     }
 }

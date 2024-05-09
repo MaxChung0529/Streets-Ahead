@@ -168,8 +168,9 @@ public class PlayerManager: MonoBehaviour
 
     public void UpdateRespawn()
     {
-        respawnPt = transform.position;
+        respawnPt = GameObject.Find("Checkpoint").GetComponent<Transform>().position;
     }
+
     private bool IsGrounded()
     {
         RaycastHit2D rayCastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);
@@ -194,8 +195,14 @@ public class PlayerManager: MonoBehaviour
     {
         if (collision.gameObject.tag == "FallDetector")
         {
-            transform.position = respawnPt;
-            deathCount++;
+
+            if (!levelManager.reachedCheckPoint)
+            {
+                rb.transform.position = GameObject.Find("Start").GetComponent<Transform>().position;
+            }else
+            {
+                rb.transform.position = GameObject.Find("Checkpoint").GetComponent<Transform>().position;
+            }
         }
     }
 

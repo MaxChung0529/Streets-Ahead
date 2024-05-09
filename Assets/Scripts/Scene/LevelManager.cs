@@ -13,7 +13,7 @@ public class LevelManager : MonoBehaviour
 
     [Header("Checkpoint")]
     public GameObject checkPoint;
-    private bool reachedCheckPoint = false;
+    public bool reachedCheckPoint = false;
     [SerializeField] private Sprite checkedFlag;
 
     public GameObject exitPortal;
@@ -42,6 +42,8 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+
+        Time.timeScale = 1;
         Application.targetFrameRate = 60;
 
         PopupUI.SetActive(false);
@@ -190,8 +192,9 @@ public class LevelManager : MonoBehaviour
         PopupUI.SetActive(false);
     }
 
-    public void SaveGame()
+    public void SaveGame(int score)
     {
+        Debug.Log("Score: " + score);
         GameData gameData = SaveLoadSystem.LoadGame();
         var tmpLevelDatas = new List<LevelData>();
 
@@ -205,18 +208,25 @@ public class LevelManager : MonoBehaviour
             }
         }
 
-        var levelData = new LevelData(currentLevel, pickedLotus, minute * 60 + second);
+        var levelData = new LevelData(currentLevel, pickedLotus, minute * 60 + second, score);
+        var added = false;
         if (gameData.levelDatas.Count > 0)
         {
             foreach (LevelData lvl in gameData.levelDatas)
             {
                 if (lvl.level == currentLevel)
                 {
+                    //Replace existing level data
                     tmpLevelDatas.Add(levelData);
+                    added = true;
                 }else
                 {
                     tmpLevelDatas.Add(lvl);
                 }
+            }
+            if (!added)
+            {
+                tmpLevelDatas.Add(levelData);
             }
             gameData.levelDatas = tmpLevelDatas;
         }else

@@ -31,8 +31,9 @@ public class FinishScene : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
 
-            if (SceneManager.GetActiveScene().name != "Tutorial")
+            if (SceneManager.GetActiveScene().name != "Tutorial" && thisScene < 3)
             {
+                Time.timeScale = 0;
                 finishedOverlay.SetActive(true);
                 var num = LevelManager.instance.lotusCount;
 
@@ -50,7 +51,8 @@ public class FinishScene : MonoBehaviour
 
                 score.text = "Score: " + num + " Lotuses x " + minuteUsed + " minutes = " + totalScore;
 
-            }else
+            }
+            else
             {
                 NextScene();
             }
@@ -60,13 +62,25 @@ public class FinishScene : MonoBehaviour
 
     public void NextScene()
     {
-        if (SceneManager.GetActiveScene().name != "Tutorial")
+        if (SceneManager.GetActiveScene().name != "Tutorial" && thisScene < 3)
         {
-            LevelManager.instance.SaveGame();
+            LevelManager.instance.SaveGame(totalScore);
+        }else if (thisScene == 3)
+        {
+
+            var num = LevelManager.instance.lotusCount;
+            var seconds = LevelManager.instance.minute * 60 + LevelManager.instance.second;
+            var minuteUsed = (seconds / 60f).ToString("#.##");
+
+            totalScore = Mathf.RoundToInt(num * 1000 * (1 / float.Parse(minuteUsed)));
+
+            LevelManager.instance.SaveGame(totalScore);
         }
+
         var newSave = SaveLoadSystem.LoadGame();
         newSave.position = new float[] { 0f, 0f, 0f };
         newSave.totalScore += totalScore;
+        Time.timeScale = 1;
         SceneManager.LoadScene(thisScene + 1);
 
         SaveLoadSystem.SaveGame(newSave);
