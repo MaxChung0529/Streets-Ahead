@@ -124,8 +124,6 @@ public class PlayerManager: MonoBehaviour
                 }
             }
         }
-
-        //IsGrounded();
         
         //SpeedUp activated
         if (spedUp)
